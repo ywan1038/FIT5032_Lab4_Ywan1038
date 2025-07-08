@@ -1,5 +1,7 @@
 <script setup>
-import JSON from './components/JSON.vue'
+// ✅ 引入 LoginForm.vue 组件（原 JSON.vue 暂时注释）
+import LoginForm from './components/LoginForm.vue'
+// import JSON from './components/JSON.vue'
 </script>
 
 <template>
@@ -9,8 +11,11 @@ import JSON from './components/JSON.vue'
   </header>
 
   <main>
-    <!-- 这里加载你的 JSON.vue 组件 -->
-    <JSON />
+    <!-- ✅ 加载新的 LoginForm 组件 -->
+    <LoginForm />
+
+    <!-- 原 JSON 组件已注释 -->
+    <!-- <JSON /> -->
   </main>
 </template>
 
