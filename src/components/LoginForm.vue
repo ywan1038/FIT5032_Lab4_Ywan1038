@@ -3,28 +3,63 @@
     <div class="row">
       <div class="col-md-8 offset-md-2">
         <h1 class="text-center">User Information Form</h1>
-        <form @submit.prevent="submitForm">
+
+        <form @submit.prevent="submitForm" ref="form" novalidate>
+          <!-- Username -->
           <div class="row mb-3">
             <div class="col-12 col-md-6">
               <label for="username" class="form-label">Username</label>
-              <input type="text" class="form-control" id="username" v-model="formData.username">
+              <input
+                type="text"
+                id="username"
+                class="form-control"
+                v-model="formData.username"
+                required
+                minlength="3"
+                pattern="^[a-zA-Z0-9_]+$"
+                title="Username must be at least 3 characters long and contain only letters, numbers, and underscores"
+              />
             </div>
+
+            <!-- Password -->
             <div class="col-12 col-md-6">
               <label for="password" class="form-label">Password</label>
-              <input type="password" class="form-control" id="password" v-model="formData.password">
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                v-model="formData.password"
+                required
+                minlength="4"
+                maxlength="20"
+                title="Password must be between 4 and 20 characters"
+              />
             </div>
           </div>
 
+          <!-- Checkbox and Gender -->
           <div class="row mb-3">
             <div class="col-12 col-md-6">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="isAustralian" v-model="formData.isAustralian">
+              <div class="form-check mt-4">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="isAustralian"
+                  v-model="formData.isAustralian"
+                />
                 <label class="form-check-label" for="isAustralian">Australian Resident?</label>
               </div>
             </div>
+
             <div class="col-12 col-md-6">
               <label for="gender" class="form-label">Gender</label>
-              <select class="form-select" id="gender" v-model="formData.gender">
+              <select
+                class="form-select"
+                id="gender"
+                v-model="formData.gender"
+                required
+              >
+                <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
                 <option value="other">Other</option>
@@ -32,9 +67,18 @@
             </div>
           </div>
 
+          <!-- Reason -->
           <div class="mb-3">
             <label for="reason" class="form-label">Reason for joining</label>
-            <textarea class="form-control" id="reason" rows="3" v-model="formData.reason"></textarea>
+            <textarea
+              class="form-control"
+              id="reason"
+              rows="3"
+              v-model="formData.reason"
+              required
+              minlength="10"
+              title="Please enter at least 10 characters"
+            ></textarea>
           </div>
 
           <div class="text-center">
@@ -43,13 +87,16 @@
           </div>
         </form>
 
-    
+        <!-- Submitted Data Display -->
         <div class="row mt-5" v-if="submittedCards.length">
           <div class="d-flex flex-wrap justify-content-start">
-            <div v-for="(card, index) in submittedCards" :key="index" class="card m-2" style="width: 18rem;">
-              <div class="card-header">
-                User Information
-              </div>
+            <div
+              v-for="(card, index) in submittedCards"
+              :key="index"
+              class="card m-2"
+              style="width: 18rem"
+            >
+              <div class="card-header">User Information</div>
               <ul class="list-group list-group-flush">
                 <li class="list-group-item">Username: {{ card.username }}</li>
                 <li class="list-group-item">Password: {{ card.password }}</li>
@@ -60,14 +107,13 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 const formData = ref({
   username: '',
@@ -75,15 +121,22 @@ const formData = ref({
   isAustralian: false,
   reason: '',
   gender: ''
-});
+})
 
-const submittedCards = ref([]);
+const submittedCards = ref([])
+const form = ref(null) // 表单引用
 
 const submitForm = () => {
-  submittedCards.value.push({
-    ...formData.value
-  });
-};
+  // 手动执行 HTML 验证
+  if (!form.value.checkValidity()) {
+    form.value.reportValidity()
+    return
+  }
+
+  // 通过验证后保存数据
+  submittedCards.value.push({ ...formData.value })
+  clearForm()
+}
 
 const clearForm = () => {
   formData.value = {
@@ -92,8 +145,8 @@ const clearForm = () => {
     isAustralian: false,
     reason: '',
     gender: ''
-  };
-};
+  }
+}
 </script>
 
 <style scoped>
@@ -104,7 +157,7 @@ const clearForm = () => {
 }
 
 .card-header {
-  background-color: #275FDA;
+  background-color: #275fda;
   color: white;
   padding: 10px;
   border-radius: 10px 10px 0 0;
