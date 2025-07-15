@@ -11,10 +11,9 @@ import LoginForm from './components/LoginForm.vue'
   </header>
 
   <main>
-    <!-- ✅ 加载新的 LoginForm 组件 -->
+  
     <LoginForm />
 
-    <!-- 原 JSON 组件已注释 -->
     <!-- <JSON /> -->
   </main>
 </template>
